@@ -1,5 +1,6 @@
 import axios from 'axios'
-// import { message, Modal } from 'antd'
+import { Message, MessageBox } from 'element-ui'
+import router from '@/router'
 import { RES_SUC_CODE, RES_FAIL_DATED_CODE } from '@/config'
 
 const CancelToken = axios.CancelToken
@@ -43,23 +44,26 @@ instance.interceptors.response.use(
       // 登录过期处理
       if (res.status === RES_FAIL_DATED_CODE) {
         source.cancel() // 取消其他正在进行的请求
-
-        // Modal.warning({
-        //   title: '提示',
-        //   okText: '确定',
-        //   content: res.msg,
-        //   onOk: () => {
-        //     window.location.href = '/login'
-        //   }
-        // })
+        MessageBox({
+          title: '过期提示',
+          message: '登录已过期，请重新登录!',
+          showCancelButton: true,
+          confirmButtonText: '确定'
+        }).then(action => {
+          localStorage.clear()
+          router.push({
+            path: '/login'
+          })
+        })
       } else {
-        // message.error(res.msg)
+        this.$message.error(res.msg)
       }
     }
 
     return res
   },
   error => {
+    Message.error(`请求异常 错误码: ${error.response.status}`)
     console.log(error)
   }
 )

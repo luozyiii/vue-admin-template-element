@@ -1,12 +1,11 @@
 <template>
   <div>
-    Hello Vue-Admin
+    404
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'Home'
+  name: 'P404'
 }
 </script>

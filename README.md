@@ -63,12 +63,10 @@ devServer: {
 ```
 
 #### 全局样式
-在assets文件下增加css文件夹
+在assets文件下增加style文件夹
 ```
 common.scss  公共的样式
-mixin.scss   混入样式
-reset.scss   重置样式
-var.scss     变量
+default.scss     变量
 ```
 vue.config.js配置文件中，加上以下代码
 ```
@@ -78,14 +76,12 @@ module.exports = {
       // 给 sass-loader 传递选项
       sass: {
         prependData: `
-        @import "@/assets/css/common.scss";
-        @import "@/assets/css/mixin.scss";
-        @import "@/assets/css/reset.scss";
-        @import "@/assets/css/var.scss"; 
+        @import "@/assets/style/common.scss";
+        @import "@/assets/style/default.scss"; 
           `
       }
     }
-  },
+  }
 }
 ```
 
@@ -157,5 +153,93 @@ import api from '@/api'
 
 Vue.prototype.api = api
 ```
+
+#### router 路由
+目录
+```
+router
+ default.js # 默认路由
+ index.js # 主入口
+ routes.js # 业务路由
+```
+
+#### 整体布局
+components/layout
+```
+Layout.vue # 布局主入口
+HeaderTop.vue # 顶部欢迎信息
+MenuBar.vue # 左边菜单
+```
+APP.vue
+```
+<template>
+  <div id="app" class="container">
+    <router-view/>
+  </div>
+</template>
+
+<style lang="scss">
+.container {
+  overflow: hidden;
+}
+</style>
+
+```
+
+#### 页面缓存 keep-alive
+Layout.vue
+```
+<keep-alive :include="includeAlives">
+  <router-view />
+</keep-alive>
+
+
+data () {
+  return {
+    includeAlives: [],
+    sideBarWidth: 180
+  }
+},
+watch: {
+  $route: {
+    handler (cur) {
+      this.aliveHandle()
+    },
+    immediate: true
+  }
+},
+
+
+aliveHandle () {
+  if (this.$route.meta.keepAlive) {
+    for (const matchRoute of this.$route.matched) {
+      const componentName = matchRoute.components.default.name
+      if (matchRoute.meta.keepAlive) {
+        // 缓存
+        if (this.includeAlives.indexOf(componentName) === -1) {
+          this.includeAlives.push(componentName)
+        }
+      } else {
+        // 清除缓存
+        const index = this.includeAlives.indexOf(componentName)
+        if (index > -1) {
+          this.includeAlives.splice(index, 1)
+        }
+      }
+    }
+  }
+}
+
+```
+还需在路由配置一下
+router.js
+```
+meta: {
+  keepAlive: true // 需要缓存
+},
+```
+
+
+
 
 

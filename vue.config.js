@@ -23,10 +23,8 @@ module.exports = {
       // 给 sass-loader 传递选项
       sass: {
         prependData: `
-        @import "@/assets/css/common.scss";
-        @import "@/assets/css/mixin.scss";
-        @import "@/assets/css/reset.scss";
-        @import "@/assets/css/var.scss"; 
+        @import "@/assets/style/common.scss";
+        @import "@/assets/style/default.scss"; 
           `
       }
     }
