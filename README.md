@@ -1,6 +1,9 @@
 # vue-admin-template-element
 >基于Element的后台管理模板 
 
+Github:
+https://github.com/luozyiii/vue-admin-template-element
+
 #### 安装vue-cli 脚手架
 ```
 npm uninstall vue-cli -g
