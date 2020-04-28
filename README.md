@@ -124,7 +124,7 @@ vue-cli-service build 默认使用生产环境变量
 console.log(process.env.NODE_ENV); // development（在终端输出）
 ```
 
-#### element-ui
+#### Element-ui
 安装
 ```
 yarn add element-ui -S
@@ -137,7 +137,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(Element, { size: 'small', zIndex: 3000 });
 ```
 
-#### axios
+#### 请求封装axios
 ```
 yarn add axios -D
 ```
