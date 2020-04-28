@@ -39,7 +39,123 @@ Check the features needed for your project: (Press <space> to select, <a> to tog
 8.是否保存这份预设配置（Yes）
 9.预设配置命名 (vue-admin-template-element)
 
-#### 
+#### vue.config.js 配置
+根目录添加vue.config.js
 
+##### 代理devServer
+```
+devServer: {
+    proxy: {
+      '/baseApis': {
+        target: 'http://xxx:8083/',
+        pathRewrite: {
+          '^/baseApis': 'baseApis'
+        },
+        changeOrigin: true
+      }
+    },
+    // 浏览器 overlay 同时显示警告和错误
+    overlay: {
+      warnings: true,
+      errors: true
+    }
+}
+```
+
+#### 全局样式
+在assets文件下增加css文件夹
+```
+common.scss  公共的样式
+mixin.scss   混入样式
+reset.scss   重置样式
+var.scss     变量
+```
+vue.config.js配置文件中，加上以下代码
+```
+module.exports = {
+  css: {
+    loaderOptions: {
+      // 给 sass-loader 传递选项
+      sass: {
+        prependData: `
+        @import "@/assets/css/common.scss";
+        @import "@/assets/css/mixin.scss";
+        @import "@/assets/css/reset.scss";
+        @import "@/assets/css/var.scss"; 
+          `
+      }
+    }
+  },
+}
+```
+
+#### 打包配置
+根目录增加开发环境(.end.dev)、测试环境(.env.test)、生产环境(.env.prod)
+```
+# .end.dev
+NODE_ENV = 'development'
+VUE_APP_CURRENTMODE = 'dev'
+VUE_APP_BASEURL = '本地开发api地址'
+
+# .end.test
+NODE_ENV = 'test'
+VUE_APP_CURRENTMODE = 'test'
+VUE_APP_BASEURL = '测试环境api地址'
+
+# .end.prod
+NODE_ENV = 'production'
+VUE_APP_CURRENTMODE = 'prod'
+VUE_APP_BASEURL = '正式环境api地址'
+```
+
+package.json配置：
+```
+"scripts": {
+  "serve": "vue-cli-service serve",
+  "build:test": "vue-cli-service build --mode test",
+  "build:prod": "vue-cli-service build --mode production",
+  "build": "vue-cli-service build",
+  "lint": "vue-cli-service lint"
+},
+```
+vue-cli-service serve 默认使用开发环境变量  
+vue-cli-service serve --mode test  添加参数指定测试环境变量  
+vue-cli-service build 默认使用生产环境变量  
+
+注意
+```
+// vue.config.js
+console.log(process.env.NODE_ENV); // development（在终端输出）
+```
+
+#### element-ui
+安装
+```
+yarn add element-ui -S
+```
+
+main.js 完整引入
+```
+import Element from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(Element, { size: 'small', zIndex: 3000 });
+```
+
+#### axios
+```
+yarn add axios -D
+```
+目录
+```
+api
+  axios.js
+  index.js
+```
+挂载到全局main.js
+```
+import api from '@/api'
+
+Vue.prototype.api = api
+```
 
 
