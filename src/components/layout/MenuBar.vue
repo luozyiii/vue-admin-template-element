@@ -80,7 +80,6 @@ export default {
           children: [
             {
               title: 'Test',
-              icon: 'el-icon-folder-checked',
               path: 'Test'
             }
           ]
