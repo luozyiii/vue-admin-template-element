@@ -74,7 +74,7 @@ export default {
   border-bottom: 1px solid #eee;
 }
 .el-main {
-  height: 94vh;
+  height: calc(100vh - 51px);
 }
 
 </style>
